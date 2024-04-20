@@ -10,6 +10,8 @@ import com.shu.data.db.models.ForecastdayDbo
 import com.shu.data.db.models.LocationDbo
 import com.shu.data.db.models.WeatherDbo
 import com.shu.entity.IWeather
+import com.shu.entity.models.Forecast
+import com.shu.entity.models.Weather
 import kotlinx.coroutines.flow.Flow
 
 
@@ -27,6 +29,22 @@ interface WeatherDao {
             ForecastdayDbo.toBd(it, city)
         })
     }
+
+    @Transaction
+    suspend fun weatherFromBd(city: String): IWeather {
+        val weatherNew: IWeather
+        val getCityFromDb = getCityLocation(city)
+        //Loading from BD
+        val getCityWeather = getCityWeather(city)
+        val getCityForecast = getCityForecast(city)
+        weatherNew = Weather(
+            location = getCityFromDb,
+            current = getCityWeather,
+            forecast = Forecast(forecastday = getCityForecast)
+        )
+        return weatherNew
+    }
+
 
     @Query("SELECT * FROM weather")
     suspend fun getAll(): List<WeatherDbo>

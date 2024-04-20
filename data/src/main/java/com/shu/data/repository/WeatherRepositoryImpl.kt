@@ -1,6 +1,5 @@
 package com.shu.data.repository
 
-import android.util.Log
 import com.shu.data.api.ServiceWeatherApi
 import com.shu.data.db.dao.WeatherDao
 import com.shu.domain.repository.WeatherRepository
@@ -14,14 +13,14 @@ class WeatherRepositoryImpl(
     private val api: ServiceWeatherApi,
 ) : WeatherRepository {
 
-    override suspend fun getWeather(city: String,currentDay: String): IWeather {
+    override suspend fun getWeather(city: String, currentDay: String): IWeather {
         val weatherNew: IWeather
         val getCityFromDb = weatherDao.getCityLocation(city)
 
         //&& getCityFromDb.localtime?.take(10) == currentDay
-        if (getCityFromDb != null && getCityFromDb.localtime?.take(10) == currentDay ) {
+        if (getCityFromDb != null && getCityFromDb.localtime?.take(10) == currentDay) {
             //Loading from BD
-            Log.d("repository", " [${getCityFromDb.localtime?.take(10)}] currentDay [$currentDay]")
+            // Log.d("repository", " [${getCityFromDb.localtime?.take(10)}] currentDay [$currentDay]")
             val getCityWeather = weatherDao.getCityWeather(city)
             val getCityForecast = weatherDao.getCityForecast(city)
             weatherNew = Weather(
@@ -32,23 +31,23 @@ class WeatherRepositoryImpl(
         } else {
             //get from API
             weatherNew = api.postCurrent(q = city)
-            weatherDao.saveInBd(city,weatherNew)
+            weatherDao.saveInBd(city, weatherNew)
         }
         return weatherNew
     }
 
-    private suspend fun weatherFromBd(city:String): IWeather {
+    private suspend fun weatherFromBd(city: String): IWeather {
         val weatherNew: IWeather
-        val getCityFromDb  = weatherDao.getCityLocation(city)
-            //Loading from BD
-            val getCityWeather = weatherDao.getCityWeather(city)
-            val getCityForecast = weatherDao.getCityForecast(city)
-            weatherNew = Weather(
-                location = getCityFromDb,
-                current = getCityWeather,
-                forecast = Forecast(forecastday = getCityForecast)
-            )
-            return weatherNew
+        val getCityFromDb = weatherDao.getCityLocation(city)
+        //Loading from BD
+        val getCityWeather = weatherDao.getCityWeather(city)
+        val getCityForecast = weatherDao.getCityForecast(city)
+        weatherNew = Weather(
+            location = getCityFromDb,
+            current = getCityWeather,
+            forecast = Forecast(forecastday = getCityForecast)
+        )
+        return weatherNew
     }
 
     override suspend fun getCity(): List<ILocation> {
