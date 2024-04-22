@@ -12,10 +12,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shu.entity.IWeather
+import com.shu.weather_main.R
 
 
 @Composable
@@ -28,7 +30,7 @@ fun WeatherForecast(
     Column(
         modifier = Modifier
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_large)))
         Text(
             text = "${weather.location?.name ?: "no name"} ",
             fontSize = 20.sp,
@@ -38,7 +40,7 @@ fun WeatherForecast(
                 .fillMaxWidth()
         )
         LazyColumn(
-            contentPadding = PaddingValues(4.dp),
+            contentPadding = PaddingValues(dimensionResource(R.dimen.padding_smaller)),
             modifier = modifier,
             state = state
         ) {
@@ -49,7 +51,7 @@ fun WeatherForecast(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_large)))
     }
 }
 

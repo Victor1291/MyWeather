@@ -1,13 +1,10 @@
 package com.shu.weather_main
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
@@ -18,8 +15,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import com.shu.entity.ILocation
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,17 +32,13 @@ fun MaterialSearch(
     val mainList = remember {
         mutableStateOf(city)
     }
-    SearchBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
+    SearchBar(modifier = Modifier.fillMaxWidth().padding(dimensionResource(R.dimen.padding_medium)),
         query = searchTextState.value,
         onQueryChange = { text ->
             viewModel.updateSearchTextState(text)
-            mainList.value = Utils.search(text,city)
+            mainList.value = Utils.search(text, city)
         },
         onSearch = {
-            Log.d("onSearch", "text for Search =  $it")
             if (mainList.value.size == 1) {
                 viewModel.getWeather(mainList.value[0].name)
             } else {
@@ -54,26 +47,21 @@ fun MaterialSearch(
             isActive.value = false
         },
         placeholder = {
-            Text(text = "Enter city...")
+            Text(text = stringResource(R.string.enter_city) )
         },
         active = isActive.value,
         onActiveChange = {
             isActive.value = it
-        }
-    ) {
+        }) {
         LazyColumn {
             items(mainList.value.size) { item ->
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp)
-                        .clickable {
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(dimensionResource(R.dimen.padding_medium)).clickable {
                             viewModel.updateSearchTextState(mainList.value[item].name)
-                            Log.d("Box click", "text for Search =  ${mainList.value[item]}")
                             viewModel.getWeather(mainList.value[item].name)
                             isActive.value = false
-                        },
-                    contentAlignment = Alignment.Center
+                        }, contentAlignment = Alignment.Center
                 ) {
                     Text(text = mainList.value[item].name)
                 }
@@ -92,7 +80,7 @@ object Utils {
         "Sochi",
     )
 
-    fun search(text: String,city: List<ILocation>): List<ILocation> {
+    fun search(text: String, city: List<ILocation>): List<ILocation> {
         return city.filter {
             it.name.lowercase().startsWith(text.lowercase())
         }

@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -59,7 +60,7 @@ fun BottomNav(navController: NavHostController, items: List<BottomNavigationScre
                         contentDescription = "icon for navigation item"
                     )
                 },
-                label = { Text(text = screen.label) },
+                label = { Text(text = stringResource(screen.label)) },
                 onClick = {
                     if (currentRoute != screen.route) {
                         navController.navigate(screen.route)

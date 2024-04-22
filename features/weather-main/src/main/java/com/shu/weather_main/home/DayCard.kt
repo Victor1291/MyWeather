@@ -14,10 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.shu.entity.IForecastday
+import com.shu.weather_main.R
 
 @Composable
 fun DayCard(
@@ -25,11 +27,11 @@ fun DayCard(
 ) {
         ElevatedCard(
             elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
+                defaultElevation = dimensionResource(R.dimen.padding_smaller)
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(dimensionResource(R.dimen.height))
 
         ) {
 
@@ -38,7 +40,7 @@ fun DayCard(
                 verticalAlignment = Alignment.CenterVertically,
 
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(dimensionResource(R.dimen.padding_large))
                     .fillMaxWidth()
             ) {
 
@@ -58,8 +60,8 @@ fun DayCard(
 
                 AsyncImage(
                     modifier = Modifier
-                        .width(50.dp)
-                        .height(50.dp),
+                        .width(dimensionResource(R.dimen.size_icon))
+                        .height(dimensionResource(R.dimen.size_icon)),
                     model = ImageRequest.Builder(context = LocalContext.current)
                         .data("https:${forecastDays.day?.condition?.icon}")
                         .build(),

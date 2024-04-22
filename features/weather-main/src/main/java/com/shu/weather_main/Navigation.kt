@@ -1,6 +1,7 @@
 package com.shu.weather_main
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -14,22 +15,22 @@ import androidx.navigation.compose.composable
 import com.shu.weather_main.cityscreen.CityScreen
 import com.shu.weather_main.cityscreen.DetailScreen
 
-sealed class BottomNavigationScreens(val route: String, val label: String, val icon: ImageVector) {
+sealed class BottomNavigationScreens(val route: String, @StringRes val label: Int, val icon: ImageVector) {
     data object MainScreen : BottomNavigationScreens(
         route = "main_screen",
-        label = "Поиск",
+        label = R.string.search,
         icon = Icons.Default.Person
     )
 
     data object LocationScreen : BottomNavigationScreens(
         route = "location_screen",
-        label = "Города",
+        label = R.string.city,
         icon = Icons.Default.Home
     )
 
     data object DetailScreen : BottomNavigationScreens(
         route = "detail_screen",
-        label = "Weather",
+        label = R.string.weather,
         icon = Icons.Default.Menu
     )
 }

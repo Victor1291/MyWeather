@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_smaller">4dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">10dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="padding_largest">24dp</dimen>
+    <dimen name="height">60dp</dimen>
+    <dimen name="size_icon">48dp</dimen>
+    <dimen name="spacer_large">100dp</dimen>
+</resources>

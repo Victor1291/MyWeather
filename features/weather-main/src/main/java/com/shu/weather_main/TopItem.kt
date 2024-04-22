@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,14 +38,14 @@ fun TopItem(
     Column {
         Row(
             modifier = Modifier
-                .height(60.dp)
+                .height(dimensionResource(R.dimen.height))
                 .fillMaxWidth()
-                .padding(top = 8.dp, bottom = 4.dp),
+                .padding(top = dimensionResource(R.dimen.padding_small), bottom = dimensionResource(R.dimen.padding_smaller)),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 Modifier
-                    .padding(start = 16.dp, end = 24.dp)
+                    .padding(start = dimensionResource(R.dimen.padding_large), end = dimensionResource(R.dimen.padding_largest))
                     .size(48.dp)
                     .clip(CircleShape)
                     .clickable {
@@ -73,8 +74,8 @@ fun TopItem(
 
             Column(
                 Modifier
-                    .padding(start = 24.dp, end = 16.dp)
-                    .size(48.dp)
+                    .padding(start = dimensionResource(R.dimen.padding_largest), end = dimensionResource(R.dimen.padding_large))
+                    .size(dimensionResource(R.dimen.size_icon))
                     .clip(CircleShape)
                     .clickable {
                         onRightIconClick?.invoke()
