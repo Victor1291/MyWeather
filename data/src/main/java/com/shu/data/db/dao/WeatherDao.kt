@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.shu.data.db.models.CitiesDbo
 import com.shu.data.db.models.ForecastdayDbo
 import com.shu.data.db.models.LocationDbo
 import com.shu.data.db.models.WeatherDbo
@@ -20,6 +21,11 @@ interface WeatherDao {
 
     @Transaction
     suspend fun saveInBd(city: String,weatherNew: IWeather) {
+        insertCity(
+            CitiesDbo(
+            name = city
+        )
+        )
         deleteLocation(city)
         //Save to BD
         insertWeather(WeatherDbo.toBd(weatherNew.current, city))
@@ -32,17 +38,16 @@ interface WeatherDao {
 
     @Transaction
     suspend fun weatherFromBd(city: String): IWeather {
-        val weatherNew: IWeather
+
         val getCityFromDb = getCityLocation(city)
         //Loading from BD
         val getCityWeather = getCityWeather(city)
         val getCityForecast = getCityForecast(city)
-        weatherNew = Weather(
+        return Weather(
             location = getCityFromDb,
             current = getCityWeather,
             forecast = Forecast(forecastday = getCityForecast)
         )
-        return weatherNew
     }
 
 
@@ -67,6 +72,9 @@ interface WeatherDao {
 
     @Query("SELECT * FROM weather")
     fun observeAll(): Flow<List<WeatherDbo>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertCity(city: CitiesDbo)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(weather: WeatherDbo)

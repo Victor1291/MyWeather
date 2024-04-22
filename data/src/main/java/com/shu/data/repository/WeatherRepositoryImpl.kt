@@ -31,22 +31,10 @@ class WeatherRepositoryImpl(
         } else {
             //get from API
             weatherNew = api.postCurrent(q = city)
-            weatherDao.saveInBd(city, weatherNew)
+            if (weatherNew.location.name.lowercase().startsWith(city.lowercase())) {
+                weatherDao.saveInBd(weatherNew.location.name, weatherNew)
+            }
         }
-        return weatherNew
-    }
-
-    private suspend fun weatherFromBd(city: String): IWeather {
-        val weatherNew: IWeather
-        val getCityFromDb = weatherDao.getCityLocation(city)
-        //Loading from BD
-        val getCityWeather = weatherDao.getCityWeather(city)
-        val getCityForecast = weatherDao.getCityForecast(city)
-        weatherNew = Weather(
-            location = getCityFromDb,
-            current = getCityWeather,
-            forecast = Forecast(forecastday = getCityForecast)
-        )
         return weatherNew
     }
 

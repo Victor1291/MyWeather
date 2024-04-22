@@ -16,7 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -60,10 +59,8 @@ class WeatherMainViewModel @Inject constructor(
      val searchWidgetState: androidx.compose.runtime.State<SearchWidgetState> = _searchWidgetState*/
 
 
-    private val _searchTextState: MutableState<String> =
-        mutableStateOf(value = "")
+    private val _searchTextState: MutableState<String> = mutableStateOf(value = "")
     val searchTextState: androidx.compose.runtime.State<String> = _searchTextState
-
 
 
     fun getTime(): String {
@@ -101,23 +98,14 @@ class WeatherMainViewModel @Inject constructor(
 
     fun getWeather(query: String = "") {
         viewModelScope.launch {
-            _uiState.update {
-                return@update UiState.Loading
-            }
-            _uiState.update {
-                try {
-                    val up = UiState.Success(
-                        getAllWeatherUseCase.invoke(query, currentDay)
-                    )
-                    saveCity(query)
-                    return@update up
+            _uiState.emit(UiState.Loading)
 
-                } catch (e: Exception) {
-                    Log.e("viewmodelError", "Error $e")
-                    return@update UiState.Error
-                } finally {
-
-                }
+            try {
+                val response = getAllWeatherUseCase.invoke(query, currentDay)
+                _uiState.emit(UiState.Success(response))
+                saveCity(response.location.name)
+            } catch (e: Exception) {
+                Log.e("viewmodelError", "Error $e")
             }
         }
     }
