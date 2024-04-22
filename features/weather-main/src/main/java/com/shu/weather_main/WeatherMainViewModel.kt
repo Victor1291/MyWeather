@@ -85,6 +85,7 @@ class WeatherMainViewModel @Inject constructor(
                 saveCity(response.location.name)
             } catch (e: Exception) {
                 Log.e("viewmodelError", "Error $e")
+                _uiState.emit(UiState.Error)
             }
         }
     }
