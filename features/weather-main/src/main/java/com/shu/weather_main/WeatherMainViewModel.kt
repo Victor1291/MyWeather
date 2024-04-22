@@ -17,9 +17,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.Calendar
+import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.GregorianCalendar
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -54,45 +54,24 @@ class WeatherMainViewModel @Inject constructor(
     private val _weather = MutableStateFlow<List<IForecastday>>(emptyList())
     val weather = _weather.asStateFlow()
 
-    /* private val _searchWidgetState: MutableState<SearchWidgetState> =
-         mutableStateOf(value = SearchWidgetState.CLOSED)
-     val searchWidgetState: androidx.compose.runtime.State<SearchWidgetState> = _searchWidgetState*/
-
 
     private val _searchTextState: MutableState<String> = mutableStateOf(value = "")
     val searchTextState: androidx.compose.runtime.State<String> = _searchTextState
 
 
-    fun getTime(): String {
-        val date = Date()
-        val calendar: Calendar = GregorianCalendar()
-        calendar.time = date
-        val year = calendar[Calendar.YEAR]
-        val month = calendar[Calendar.MONTH] + 1
-        val day = calendar[Calendar.DAY_OF_MONTH]
-
-        return if (month < 10) "$year-0$month-$day" else "$year-$month-$day"
+    private fun getTime(): String {
+        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
     }
-
-
-    /* fun updateSearchWidgetState(newValue: SearchWidgetState) {
-         _searchWidgetState.value = newValue
-     }*/
 
     fun updateSearchTextState(newValue: String) {
         _searchTextState.value = newValue
     }
-
-    /* fun setLoadingState() {
-         _uiState.value = UiState.Loading
-     }*/
 
     fun changeStateTOpBar(stateNew: Boolean) {
         _stateTOpBar.value = stateNew
     }
 
     init {
-        Log.d("Init Viewmodel", " ******************************** ")
         getCityFromDataSource()
     }
 

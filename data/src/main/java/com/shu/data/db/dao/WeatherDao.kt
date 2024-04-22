@@ -1,5 +1,6 @@
 package com.shu.data.db.dao
 
+import android.util.Log
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -21,12 +22,10 @@ interface WeatherDao {
 
     @Transaction
     suspend fun saveInBd(city: String,weatherNew: IWeather) {
-        insertCity(
-            CitiesDbo(
-            name = city
-        )
-        )
-        deleteLocation(city)
+        Log.d("dao", "****************** saveInbd *********************")
+        insertCity(CitiesDbo(name = city))
+
+        clearForecast(city)
         //Save to BD
         insertWeather(WeatherDbo.toBd(weatherNew.current, city))
         insertLocation(LocationDbo.toBd(weatherNew.location))
@@ -68,7 +67,7 @@ interface WeatherDao {
     suspend fun getCityForecast(city: String): List<ForecastdayDbo>
 
     @Query("DELETE FROM forecast WHERE city = :city")
-    suspend fun deleteLocation(city: String)
+    suspend fun clearForecast(city: String)
 
     @Query("SELECT * FROM weather")
     fun observeAll(): Flow<List<WeatherDbo>>

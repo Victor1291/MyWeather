@@ -1,5 +1,6 @@
 package com.shu.data.repository
 
+import android.util.Log
 import com.shu.data.api.ServiceWeatherApi
 import com.shu.data.db.dao.WeatherDao
 import com.shu.domain.repository.WeatherRepository
@@ -16,11 +17,11 @@ class WeatherRepositoryImpl(
     override suspend fun getWeather(city: String, currentDay: String): IWeather {
         val weatherNew: IWeather
         val getCityFromDb = weatherDao.getCityLocation(city)
-
+        Log.d("repository", " [${getCityFromDb.localtime?.take(10)}] currentDay [$currentDay]")
         //&& getCityFromDb.localtime?.take(10) == currentDay
         if (getCityFromDb != null && getCityFromDb.localtime?.take(10) == currentDay) {
             //Loading from BD
-            // Log.d("repository", " [${getCityFromDb.localtime?.take(10)}] currentDay [$currentDay]")
+
             val getCityWeather = weatherDao.getCityWeather(city)
             val getCityForecast = weatherDao.getCityForecast(city)
             weatherNew = Weather(
