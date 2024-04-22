@@ -81,6 +81,17 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
+// ...with Kotlin.
+    kspAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
+
+
+    androidTestImplementation("io.mockk:mockk-android:1.13.10")
+    androidTestImplementation("io.mockk:mockk-agent:1.13.10")
+
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

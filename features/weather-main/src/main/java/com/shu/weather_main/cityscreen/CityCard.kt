@@ -13,8 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
 import com.shu.entity.ILocation
+import com.shu.weather_main.R
 
 @Composable
 fun CityCard(
@@ -23,11 +24,11 @@ fun CityCard(
 ) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = dimensionResource(R.dimen.padding_smaller)
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(dimensionResource(R.dimen.height))
             .clickable { onCityClicked(location.name) }
 
     ) {
@@ -37,7 +38,7 @@ fun CityCard(
             verticalAlignment = Alignment.CenterVertically,
 
             modifier = Modifier
-                .padding(16.dp)
+                .padding(dimensionResource(R.dimen.padding_large))
                 .fillMaxWidth()
         ) {
 
