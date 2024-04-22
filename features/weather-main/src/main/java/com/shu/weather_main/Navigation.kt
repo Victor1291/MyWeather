@@ -63,16 +63,13 @@ fun MainNavHost(
                     BottomNavigationScreens.DetailScreen.route
                 )
             })
-            BackHandler {
-                navController.popBackStack()
-            }
         }
         composable(BottomNavigationScreens.DetailScreen.route) {
             viewModel.getWeather()
             DetailScreen(viewModel)
-            BackHandler {
-                navController.popBackStack()
-            }
+          /*  BackHandler {
+                navController.navigateUp()
+            }*/
         }
     }
 }

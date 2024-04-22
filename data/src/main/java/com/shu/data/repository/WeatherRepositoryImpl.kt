@@ -21,7 +21,7 @@ class WeatherRepositoryImpl(
         //&& getCityFromDb.localtime?.take(10) == currentDay
         if (getCityFromDb != null && getCityFromDb.localtime?.take(10) == currentDay) {
             //Loading from BD
-//  Log.d("repository", " [${getCityFromDb.localtime?.take(10)}] currentDay [$currentDay]")
+ // Log.d("repository", " [${getCityFromDb.localtime?.take(10) ?: ""}] currentDay [$currentDay]")
             val getCityWeather = weatherDao.getCityWeather(city)
             val getCityForecast = weatherDao.getCityForecast(city)
             weatherNew = Weather(

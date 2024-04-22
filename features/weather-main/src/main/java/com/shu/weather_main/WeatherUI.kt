@@ -4,7 +4,6 @@ package com.shu.weather_main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -62,9 +61,46 @@ fun BottomNav(navController: NavHostController, items: List<BottomNavigationScre
                 },
                 label = { Text(text = stringResource(screen.label)) },
                 onClick = {
-                    if (currentRoute != screen.route) {
-                        navController.navigate(screen.route)
+                    when (currentRoute) {
+                        "main_screen" -> {
+                            when (screen.route) {
+                                "location_screen" -> {
+                                    navController.navigate(screen.route) {
+
+                                    }
+                                }
+                                else -> {}
+                            }
+                        }
+
+                        "location_screen" -> {
+                            when (screen.route) {
+                                "detail_screen" -> {
+                                    navController.navigate(screen.route) {
+                                    }
+                                }
+
+                                "main_screen" -> {
+                                    navController.navigate(screen.route) {
+                                        popUpTo(screen.route) { inclusive = true }
+                                    }
+                                }
+
+                                else -> {}
+                            }
+                        }
+
+                        "detail_screen" -> {
+                            navController.navigate(screen.route) {
+                                popUpTo(screen.route) { inclusive = false }
+                            }
+                        }
+
+                        else -> {}
                     }
+                    /* if (currentRoute != screen.route) {
+
+                     }*/
                 }
             )
         }
