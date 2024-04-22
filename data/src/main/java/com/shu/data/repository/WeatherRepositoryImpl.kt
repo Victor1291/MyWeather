@@ -55,7 +55,7 @@ class WeatherRepositoryImpl(
     }
 
     override suspend fun getWeatherCity(city: String): IWeather {
-        return weatherFromBd(city)
+        return weatherDao.weatherFromBd(city)
     }
 }
 //        //берём с кэша если есть, операция в прогрессе.
