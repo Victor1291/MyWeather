@@ -1,6 +1,6 @@
 package com.shu.entity
 
 data class CityItem(
-    val name: String,
-    val tempC: Double
+    val listCity: List<String>,
+    val tempTable: Map<Int,List<String>>,
 )

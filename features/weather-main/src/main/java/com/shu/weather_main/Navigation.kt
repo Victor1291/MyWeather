@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
@@ -14,18 +15,25 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.shu.weather_main.cityscreen.CityScreen
 import com.shu.weather_main.cityscreen.DetailScreen
+import com.shu.weather_main.tables.DataTable
 
 sealed class BottomNavigationScreens(val route: String, @StringRes val label: Int, val icon: ImageVector) {
     data object MainScreen : BottomNavigationScreens(
         route = "main_screen",
         label = R.string.search,
-        icon = Icons.Default.Person
+        icon = Icons.Default.Place
     )
 
     data object LocationScreen : BottomNavigationScreens(
         route = "location_screen",
         label = R.string.city,
         icon = Icons.Default.Home
+    )
+
+    data object AllCityTable : BottomNavigationScreens(
+        route = "allCity_screen",
+        label = R.string.table,
+        icon = Icons.Default.Menu
     )
 
     data object DetailScreen : BottomNavigationScreens(
@@ -38,6 +46,7 @@ sealed class BottomNavigationScreens(val route: String, @StringRes val label: In
 val bottomNavigationItems = listOf(
     BottomNavigationScreens.MainScreen,
     BottomNavigationScreens.LocationScreen,
+    BottomNavigationScreens.AllCityTable
 )
 
 @Composable
@@ -64,6 +73,13 @@ fun MainNavHost(
                 )
             })
         }
+        composable(BottomNavigationScreens.AllCityTable.route) {
+            viewModel.changeStateTOpBar(false)
+            viewModel.getAllWeather()
+            DataTable(viewModel)
+        }
+
+
         composable(BottomNavigationScreens.DetailScreen.route) {
             viewModel.getWeather()
             DetailScreen(viewModel)

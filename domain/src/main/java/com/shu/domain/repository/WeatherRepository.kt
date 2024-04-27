@@ -10,5 +10,8 @@ interface WeatherRepository {
 
     suspend fun getCity() : List<ILocation>
     suspend fun getWeatherCity(city: String): IWeather
+    suspend fun allWeatherFromBd(): List<IWeather>
+
+
 
 }

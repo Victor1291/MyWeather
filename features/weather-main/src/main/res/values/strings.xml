@@ -2,6 +2,7 @@
     <string name="app_name">My Weather</string>
     <string name="search">Search</string>
     <string name="city">City</string>
+    <string name="table">Table</string>
     <string name="weather">Weather</string>
     <string name="enter_city">Enter city...</string>
 </resources>

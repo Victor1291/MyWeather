@@ -49,6 +49,24 @@ interface WeatherDao {
         )
     }
 
+    @Transaction
+    suspend fun allWeatherFromBd(): List<IWeather> {
+        val listWeather = mutableListOf<IWeather>()
+        val getCityFromDb = getCity()
+        getCityFromDb.forEach {city ->
+            val getCityWeather = getCityWeather(city.name)
+            val getCityForecast = getCityForecast(city.name)
+            listWeather.add(
+                Weather(
+                    location = city,
+                    current = getCityWeather,
+                    forecast = Forecast(forecastday = getCityForecast)
+                )
+            )
+        }
+       return listWeather.toList()
+    }
+
 
     @Query("SELECT * FROM weather")
     suspend fun getAll(): List<WeatherDbo>

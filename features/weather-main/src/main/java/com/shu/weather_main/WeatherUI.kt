@@ -69,6 +69,11 @@ fun BottomNav(navController: NavHostController, items: List<BottomNavigationScre
 
                                     }
                                 }
+                                "allCity_screen" -> {
+                                    navController.navigate(screen.route) {
+
+                                    }
+                                }
                                 else -> {}
                             }
                         }
@@ -85,7 +90,28 @@ fun BottomNav(navController: NavHostController, items: List<BottomNavigationScre
                                         popUpTo(screen.route) { inclusive = true }
                                     }
                                 }
+                                "allCity_screen" -> {
+                                    navController.navigate(screen.route) {
+                                        popUpTo(screen.route) { inclusive = true }
+                                    }
+                                }
 
+                                else -> {}
+                            }
+                        }
+
+                        "allCity_screen" -> {
+                            when (screen.route) {
+                                "main_screen" -> {
+                                    navController.navigate(screen.route) {
+                                        popUpTo(screen.route) { inclusive = true }
+                                    }
+                                }
+                                "location_screen" -> {
+                                    navController.navigate(screen.route) {
+                                        popUpTo(screen.route) { inclusive = true }
+                                    }
+                                }
                                 else -> {}
                             }
                         }

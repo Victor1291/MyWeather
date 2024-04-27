@@ -46,6 +46,12 @@ class WeatherRepositoryImpl(
     override suspend fun getWeatherCity(city: String): IWeather {
         return weatherDao.weatherFromBd(city)
     }
+
+    override suspend fun allWeatherFromBd(): List<IWeather> {
+        return weatherDao.allWeatherFromBd()
+    }
+
+
 }
 //        //берём с кэша если есть, операция в прогрессе.
 //        //можно назначить customId в body ?  и город или координаты города.

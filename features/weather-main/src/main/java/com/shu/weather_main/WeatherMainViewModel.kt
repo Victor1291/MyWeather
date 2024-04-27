@@ -9,6 +9,7 @@ import com.shu.datastore.DataStoreDataSource
 import com.shu.domain.usecase.GetAllCityUseCase
 import com.shu.domain.usecase.GetAllWeatherUseCase
 import com.shu.domain.usecase.GetWeatherUseCase
+import com.shu.entity.CityItem
 import com.shu.entity.IForecastday
 import com.shu.entity.ILocation
 import com.shu.entity.IWeather
@@ -54,6 +55,9 @@ class WeatherMainViewModel @Inject constructor(
     private val _weather = MutableStateFlow<List<IForecastday>>(emptyList())
     val weather = _weather.asStateFlow()
 
+    private val _weatherAll = MutableStateFlow(CityItem(emptyList(), emptyMap()))
+    val weatherAll = _weatherAll.asStateFlow()
+
 
     private val _searchTextState: MutableState<String> = mutableStateOf(value = "")
     val searchTextState: androidx.compose.runtime.State<String> = _searchTextState
@@ -90,6 +94,17 @@ class WeatherMainViewModel @Inject constructor(
         }
     }
 
+    fun getAllWeather() {
+        viewModelScope.launch {
+            try {
+                val response = getAllWeatherUseCase.allWeatherFromBd()
+                _weatherAll.emit(response)
+            } catch (e: Exception) {
+                Log.e("viewmodel- getAll", "Error $e")
+            }
+        }
+    }
+
     fun getAllCity() {
         viewModelScope.launch {
             _city.value = getAllCityUseCase.invoke()
@@ -119,4 +134,7 @@ class WeatherMainViewModel @Inject constructor(
             }
         }
     }
+
+
+
 }
