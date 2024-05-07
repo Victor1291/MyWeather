@@ -31,6 +31,7 @@ class WeatherRepositoryImpl(
             )
         } else {
             //get from API
+
             weatherNew = api.postCurrent(q = city)
             if (weatherNew.location.name.lowercase().startsWith(city.lowercase())) {
                 weatherDao.saveInBd(weatherNew.location.name, weatherNew)

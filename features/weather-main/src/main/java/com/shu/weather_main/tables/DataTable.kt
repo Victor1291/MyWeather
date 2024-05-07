@@ -1,6 +1,7 @@
 package com.shu.weather_main.tables
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -50,7 +51,9 @@ fun DataTable(
         )
     ) {
         stickyHeader {
-            Column () {
+            Column (
+                modifier = Modifier
+            ) {
                 listWeather.listCity.forEachIndexed { index, title ->
                     HeaderText(
                         text = title.take(11),
