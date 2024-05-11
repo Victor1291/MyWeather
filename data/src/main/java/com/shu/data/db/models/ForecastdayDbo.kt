@@ -24,14 +24,14 @@ data class ForecastdayDbo(
     override val day: DayDbo?,
     @Embedded("astro")
     override val astro: AstroDbo?,
-    /*  @Embedded("hour")
-      override val hour: List<HourDbo>*/
+   /* @Embedded("hour")
+    override val hour: List<HourDbo>*/
 
 ) : IForecastday {
 
     companion object {
 
-        fun toBd(cur: IForecastday,city: String): ForecastdayDbo {
+        fun toBd(cur: IForecastday, city: String): ForecastdayDbo {
             return ForecastdayDbo(
                 date = cur.date,
                 city = city,
@@ -55,7 +55,7 @@ data class ForecastdayDbo(
                     dailyWillItSnow = cur.day?.dailyWillItSnow,
                     dailyChanceOfSnow = cur.day?.dailyChanceOfSnow,
                     condition = ConditionDbo(
-                    text = cur.day?.condition?.text,
+                        text = cur.day?.condition?.text,
                         icon = cur.day?.condition?.icon,
                         code = cur.day?.condition?.code,
                     ),
@@ -70,10 +70,53 @@ data class ForecastdayDbo(
                     moonIllumination = cur.astro?.moonIllumination,
                     isMoonUp = cur.astro?.isMoonUp,
                     isSunUp = cur.astro?.isSunUp,
-                )
+                ),
+               /* hour = cur.hour.map { ihour ->
+                    HourDbo(
+                        timeEpoch = ihour.timeEpoch,
+                        time = ihour.time,
+                        tempC = ihour.tempC,
+                        tempF = ihour.tempF,
+                        isDay = ihour.isDay,
+                        condition = ihour.condition,
+                        windMph = ihour.windMph,
+                        windKph = ihour.windKph,
+                        windDegree = ihour.windDegree,
+                        windDir = ihour.windDir,
+                        pressureMb = ihour.pressureMb,
+                        pressureIn = ihour.pressureIn,
+                        precipMm = ihour.precipMm,
+                        precipIn = ihour.precipIn,
+                        snowCm = ihour.snowCm,
+                        humidity = ihour.humidity,
+                        cloud = ihour.cloud,
+                        feelslikeC = ihour.feelslikeC,
+                        feelslikeF = ihour.feelslikeF,
+                        windchillC = ihour.windchillC,
+                        windchillF = ihour.windchillF,
+                        heatindexC = ihour.heatindexC,
+                        heatindexF = ihour.heatindexF,
+                        dewpointC = ihour.dewpointC,
+                        dewpointF = ihour.dewpointF,
+                        willItRain = ihour.willItRain,
+                        chanceOfRain = ihour.chanceOfRain,
+                        willItSnow = ihour.willItSnow,
+                        chanceOfSnow = ihour.chanceOfSnow,
+                        visKm = ihour.visKm,
+                        visMiles = ihour.visMiles,
+                        gustMph = ihour.gustMph,
+                        gustKph = ihour.gustKph,
+                        uv = ihour.uv,
+                    )
+
+                }*/
+
             )
         }
     }
+
+    override val hour: List<IHour>
+        get() = emptyList()
 
 }
 

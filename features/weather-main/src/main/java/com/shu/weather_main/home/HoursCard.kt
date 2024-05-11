@@ -1,6 +1,7 @@
 package com.shu.weather_main.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,23 +28,20 @@ fun HoursCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
+        modifier = Modifier.padding(4.dp)
 
     ) {
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
 
             modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
+                .padding(4.dp)
         ) {
 
             Text(
-                text = hours.time ?: "no data",
+                text = hours.time?.takeLast(5) ?: "no data",
                 color = MaterialTheme.colorScheme.primary
             )
 
@@ -62,6 +60,10 @@ fun HoursCard(
                     .data("https:${hours.condition?.icon}")
                     .build(),
                 contentDescription = "icon"
+            )
+            Text(
+                text =  hours.pressureIn.toString() ,
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }

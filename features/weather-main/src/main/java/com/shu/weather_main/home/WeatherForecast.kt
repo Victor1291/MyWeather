@@ -37,6 +37,26 @@ fun WeatherForecast(
             modifier = Modifier
                 .fillMaxWidth()
         )
+        weather.current?.tempC.let {
+            if (it != null) {
+                Text(
+                    text = if (it >= 0) "+$it" else "$it",
+                    fontSize = 26.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+        }
+        Text(
+            text = " ${weather.current.condition?.text ?: "no name"} ",
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
         LazyColumn(
             contentPadding = PaddingValues(dimensionResource(R.dimen.padding_smaller)),
             modifier = modifier,
@@ -49,6 +69,8 @@ fun WeatherForecast(
                 }
             }
         }
+
+        ListHours(weather = weather, modifier = modifier)
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_large)))
     }
 }
