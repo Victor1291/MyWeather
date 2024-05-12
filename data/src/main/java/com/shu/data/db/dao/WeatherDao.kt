@@ -8,7 +8,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.shu.data.db.models.CitiesDbo
+import com.shu.data.db.models.CityWithHours
 import com.shu.data.db.models.ForecastdayDbo
+import com.shu.data.db.models.HourDbo
 import com.shu.data.db.models.LocationDbo
 import com.shu.data.db.models.WeatherDbo
 import com.shu.entity.IWeather
@@ -21,17 +23,23 @@ import kotlinx.coroutines.flow.Flow
 interface WeatherDao {
 
     @Transaction
-    suspend fun saveInBd(city: String,weatherNew: IWeather) {
-        Log.d("dao", "****************** saveInbd *********************")
+    suspend fun saveInBd(city: String, weatherNew: IWeather) {
+        Log.d("dao", "****************** $city  save In bd *********************")
+
         insertCity(CitiesDbo(name = city))
 
         clearForecast(city)
+        clearHours(city)
+
         //Save to BD
         insertWeather(WeatherDbo.toBd(weatherNew.current, city))
         insertLocation(LocationDbo.toBd(weatherNew.location))
 
-        insertForecast(weatherNew.forecast.forecastday.map {
-            ForecastdayDbo.toBd(it, city)
+        insertForecast(weatherNew.forecast.forecastday.map {day ->
+            insertHours(day.hours.map {hour ->
+                HourDbo.toBd(hour,city)
+            })
+            ForecastdayDbo.toBd(day, city)
         })
     }
 
@@ -42,10 +50,14 @@ interface WeatherDao {
         //Loading from BD
         val getCityWeather = getCityWeather(city)
         val getCityForecast = getCityForecast(city)
+        val getCityHours = getCityHours(city)
         return Weather(
             location = getCityFromDb,
             current = getCityWeather,
-            forecast = Forecast(forecastday = getCityForecast)
+            forecast = Forecast(forecastday = getCityForecast.map {
+                it.hours = getCityHours
+                it
+            })
         )
     }
 
@@ -53,19 +65,26 @@ interface WeatherDao {
     suspend fun allWeatherFromBd(): List<IWeather> {
         val listWeather = mutableListOf<IWeather>()
         val getCityFromDb = getCity()
-        getCityFromDb.forEach {city ->
+        getCityFromDb.forEach { city ->
             val getCityWeather = getCityWeather(city.name)
             val getCityForecast = getCityForecast(city.name)
+            val getCityHours = getCityHours(city.name)
             listWeather.add(
                 Weather(
                     location = city,
                     current = getCityWeather,
-                    forecast = Forecast(forecastday = getCityForecast)
+                    forecast = Forecast(forecastday =getCityForecast.map {
+                        it.hours = getCityHours
+                        it
+                    })
                 )
             )
         }
-       return listWeather.toList()
+        return listWeather.toList()
     }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertHours(hours: List<HourDbo>)
 
 
     @Query("SELECT * FROM weather")
@@ -77,15 +96,20 @@ interface WeatherDao {
     @Query("SELECT * FROM location WHERE name = :city ")
     suspend fun getCityLocation(city: String): LocationDbo
 
+    @Query("SELECT * FROM hours WHERE city = :city ")
+    suspend fun getCityHours(city: String):List<HourDbo>
 
     @Query("SELECT * FROM weather WHERE name = :city ")
     suspend fun getCityWeather(city: String): WeatherDbo
 
+    @Transaction
     @Query("SELECT * FROM forecast WHERE city = :city ")
     suspend fun getCityForecast(city: String): List<ForecastdayDbo>
 
     @Query("DELETE FROM forecast WHERE city = :city")
     suspend fun clearForecast(city: String)
+    @Query("DELETE FROM hours WHERE city = :city")
+    suspend fun clearHours(city: String)
 
     @Query("SELECT * FROM weather")
     fun observeAll(): Flow<List<WeatherDbo>>

@@ -37,7 +37,7 @@ fun ListHours(
             state = state
         ) {
 
-            weather.forecast?.forecastday?.first()?.hour .let { forecast ->
+            weather.forecast?.forecastday?.first()?.hours.let { forecast ->
                 forecast?.size?.let {
                     items(it) { day ->
                         HoursCard(forecast[day])

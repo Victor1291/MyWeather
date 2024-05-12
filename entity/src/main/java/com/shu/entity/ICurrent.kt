@@ -3,7 +3,6 @@ package com.shu.entity
 
 interface ICurrent {
 
-
     val tempC      : Double?
     val isDay      : Int?
     val condition  : ICondition?

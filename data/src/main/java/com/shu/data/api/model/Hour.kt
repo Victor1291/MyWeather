@@ -39,3 +39,5 @@ data class Hour(
     @SerializedName("gust_kph"       ) override var gustKph      : Double?       = null,
     @SerializedName("uv"             ) override var uv           : Double?       = null
 ): IHour
+
+

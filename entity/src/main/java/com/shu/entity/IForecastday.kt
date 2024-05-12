@@ -6,5 +6,5 @@ interface IForecastday {
     val dateEpoch : Int?
     val day       : IDay?
     val astro     : IAstro?
-    val hour      : List<IHour>
+    val hours      : List<IHour>
 }

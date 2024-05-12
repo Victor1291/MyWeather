@@ -24,11 +24,14 @@ class WeatherRepositoryImpl(
  // Log.d("repository", " [${getCityFromDb.localtime?.take(10) ?: ""}] currentDay [$currentDay]")
             val getCityWeather = weatherDao.getCityWeather(city)
             val getCityForecast = weatherDao.getCityForecast(city)
+            val getCityHours = weatherDao.getCityHours(city)
             weatherNew = Weather(
                 location = getCityFromDb,
                 current = getCityWeather,
-                forecast = Forecast(forecastday = getCityForecast)
-            )
+                forecast = Forecast(forecastday = getCityForecast.map {
+                    it.hours = getCityHours
+                    it
+                }))
         } else {
             //get from API
 
