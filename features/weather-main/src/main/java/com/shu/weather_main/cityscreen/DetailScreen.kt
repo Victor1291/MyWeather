@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import com.shu.entity.IHour
 import com.shu.weather_main.R
 import com.shu.weather_main.WeatherMainViewModel
 import com.shu.weather_main.home.DayCard
@@ -33,13 +34,18 @@ fun DetailScreen(
         forecastday.let { forecast ->
             items(forecast.size) { day ->
                 DayCard(forecast[day])
-                if (day == 0)
-                    ListHours(hours = forecast[day].hours.take(24), modifier = modifier)
-                if (day == 1)
-                    ListHours(hours = forecast[day].hours.subList(24, 48), modifier = modifier)
-                if (day == 2)
-                    ListHours(hours = forecast[day].hours.takeLast(24), modifier = modifier)
+                if (day == 0) {
+                    ListHours(hours = changeList(forecast[day].hours.take(24)), modifier = modifier)
+                }
+                if (day == 1) {
+                    ListHours(hours = changeList(forecast[day].hours.subList(24, 48)), modifier = modifier)
+                }
+                if (day == 2) {
+                    ListHours(hours = changeList( forecast[day].hours.takeLast(24)), modifier = modifier)
+                }
             }
         }
     }
 }
+
+fun changeList(list: List<IHour>): List<IHour> = list.takeLast(18) + list.take(6)
