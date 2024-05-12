@@ -13,12 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.shu.entity.IHour
 import com.shu.entity.IWeather
 
 
 @Composable
 fun ListHours(
-    weather: IWeather,
+    hours: List<IHour>,
     modifier: Modifier,
     state: LazyListState = rememberLazyListState(),
     // onCharacterClicked: (ListItem) -> Unit
@@ -37,15 +38,15 @@ fun ListHours(
             state = state
         ) {
 
-            weather.forecast?.forecastday?.first()?.hours.let { forecast ->
-                forecast?.size?.let {
+            hours.let { listHours    ->
+                listHours.size?.let {
                     items(it) { day ->
-                        HoursCard(forecast[day])
+                        HoursCard(listHours[day])
                     }
                 }
             }
         }
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 

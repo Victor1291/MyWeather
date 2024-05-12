@@ -1,59 +1,45 @@
 package com.shu.weather_main.cityscreen
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import com.shu.weather_main.R
 import com.shu.weather_main.WeatherMainViewModel
 import com.shu.weather_main.home.DayCard
+import com.shu.weather_main.home.ListHours
 
 @Composable
 fun DetailScreen(
     viewModel: WeatherMainViewModel,
     modifier: Modifier = Modifier,
-    state: LazyListState = rememberLazyListState(),
 ) {
 
     val forecastday by viewModel.weather.collectAsState()
 
-    Column(
-        modifier = Modifier
+    LazyColumn(
+        contentPadding = PaddingValues(dimensionResource(R.dimen.padding_smaller)),
+        modifier = modifier
+            .padding(
+                top = dimensionResource(R.dimen.height),
+                bottom = dimensionResource(R.dimen.height)
+            )
     ) {
-        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_large)))
-        Text(
-            text = "${viewModel.choiceCity ?: "no name"} ",
-            fontSize = 20.sp,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-        LazyColumn(
-            contentPadding = PaddingValues(dimensionResource(R.dimen.padding_smaller)),
-            modifier = modifier,
-            state = state
-        ) {
 
-            forecastday.let { forecast ->
-                items(forecast.size) { day ->
-                    DayCard(forecast[day])
-                }
+        forecastday.let { forecast ->
+            items(forecast.size) { day ->
+                DayCard(forecast[day])
+                if (day == 0)
+                    ListHours(hours = forecast[day].hours.take(24), modifier = modifier)
+                if (day == 1)
+                    ListHours(hours = forecast[day].hours.subList(24, 48), modifier = modifier)
+                if (day == 2)
+                    ListHours(hours = forecast[day].hours.takeLast(24), modifier = modifier)
             }
         }
-        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_large)))
     }
 }

@@ -70,7 +70,7 @@ fun WeatherForecast(
             }
         }
 
-        ListHours(weather = weather, modifier = modifier)
+        ListHours(hours = weather.forecast.forecastday.first().hours, modifier = modifier)
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_large)))
     }
 }
